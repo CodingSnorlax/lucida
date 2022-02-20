@@ -47,7 +47,7 @@
           <tbody>
             <tr v-for="productItem in productData" :key="productItem.id">
               <td style="width: 250px">
-                <div  :style="{backgroundImage: `url(${productItem.imageUrl})` }"
+                <div  :style="{ backgroundImage: `url(${productItem.imageUrl})` }"
                       style="height: 150px; 
                       background-size: cover; 
                       background-position: center"
@@ -199,7 +199,7 @@
             <button type="submit" class="btn btn-danger">送出訂單</button>
           </div>
         </v-form> -->
-
+      
       </div>
     </div>
   </div>
@@ -251,7 +251,6 @@
           </div>
       </div>
           <!-- col-sm-6 end -->
-      </div>
       </div>
       </div>
       </div>
