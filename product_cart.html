@@ -172,7 +172,7 @@
       <div class="my-5 row justify-content-center">
 
         <!-- 驗證表單的區塊 -->
-        <!-- <v-form ref="form" class="col-md-6" v-slot="{ errors }">
+        <v-form ref="form" class="col-md-6" v-slot="{ errors }">
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <v-field id="email" name="email" type="email" class="form-control"
@@ -208,8 +208,9 @@
           <div class="text-end">
             <button type="submit" class="btn btn-danger">送出訂單</button>
           </div>
-        </v-form> -->
-      
+        </v-form>
+        <!-- 表單驗證區 -->
+        
       </div>
     </div>
   </div>
@@ -281,13 +282,13 @@
   <!-- vue -->
   <script src="https://unpkg.com/vue@next"></script>
 
-  <!-- vee validation 組合 -->
+  <!-- 載入 vee validate 所用到的相關套件 -->
   <script src="https://unpkg.com/vee-validate@next"></script>
   <script src="https://unpkg.com/@vee-validate/i18n@4.1.0"></script>
   <script src="https://unpkg.com/@vee-validate/rules"></script>
 
   <!-- 自己的 js -->
-  <script src="./JS/product_cart.js"></script>
+  <script type="module" src="./JS/product_cart.js"></script>
 
 </body>
 

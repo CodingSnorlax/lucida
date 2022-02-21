@@ -1,7 +1,27 @@
+// 匯入 product modal 元件
+import userProductModal from './product_modal.js';
 
 // API 資訊
 const base_url = 'https://vue3-course-api.hexschool.io/v2/api';
 const api_path = 'karen666'; 
+
+
+// veevalidate rules
+Object.keys(VeeValidateRules).forEach(rule => {
+    if (rule !== 'default') {
+      VeeValidate.defineRule(rule, VeeValidateRules[rule]);
+    }
+  });
+
+// 讀取外部資源 (支援中文版的驗證)
+VeeValidateI18n.loadLocaleFromURL('./zh_TW.json');
+
+// Activate the locale
+VeeValidate.configure({
+  generateMessage: VeeValidateI18n.localize('zh_TW'),
+  validateOnInput: true, // 調整為輸入字元立即進行驗證
+});
+
 
 // 根元件
 const app = {
@@ -14,6 +34,10 @@ const app = {
             isLoadingItem: '',
             qty: 1,
         }
+    },
+
+    methods: {
+        userProductModal
     },
 
     methods: {
@@ -137,63 +161,71 @@ const app = {
 // Vue 以 cdn 載入的子元件
 Vue.createApp(app)
 // 註冊 modal 元件
-.component('user-product-modal', {
-    template: '#userProductModal',
-    props: ['id'],
-    data(){
-        return{
-            bsModal: {},
-            productInModal: {},
-        }
-    },
-    watch: {
+// .component('user-product-modal', {
+    // template: '#userProductModal',
+    // props: ['id'],
+    // data(){
+    //     return{
+    //         bsModal: {},
+    //         productInModal: {},
+    //         qty: 1,
+    //     }
+    // },
+    // watch: {
 
-        // 監控來自 props 的 id，只要畫面上 id 產生變動就會觸發抓取 modal 內不同筆資料
-        id(){
-            this.getModalProductList();
-        }
-    },
-    methods: {
+    //     // 監控來自 props 的 id，只要畫面上 id 產生變動就會觸發抓取 modal 內不同筆資料
+    //     id(){
+    //         this.getModalProductList();
+    //     }
+    // },
+    // methods: {
 
-        openProductModal(){
-            this.bsModal.show();
-        },
+    //     openProductModal(){
+    //         this.bsModal.show();
+    //     },
 
-        closeProductModal(){
-            this.bsModal.hide();
-        },
+    //     closeProductModal(){
+    //         this.bsModal.hide();
+    //     },
 
-        // 抓取單筆產品資料 (開 modal 的時候就打這支 API)
-        getModalProductList(){
-            axios.get(`${base_url}/${api_path}/product/${this.id}`)
-            .then(res => {
-                console.log(res.data.product);
-                this.productInModal = res.data.product;
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        },
+    //     // 抓取單筆產品資料 (開 modal 的時候就打這支 API)
+    //     getModalProductList(){
+    //         axios.get(`${base_url}/${api_path}/product/${this.id}`)
+    //         .then(res => {
+    //             console.log(res.data.product);
+    //             this.productInModal = res.data.product;
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         })
+    //     },
         
 
-        // 在 modal 內新增產品數量
-        addToCart(){
-            console.log(this);
-            console.log(this.id, '哪裡來的？');
-            this.$emit('add-to-cart', this.id, this.qty);
-            this.closeProductModal()
-        },
+    //     // 在 modal 內新增產品數量
+    //     addToCart(){
+    //         console.log(this);
+    //         console.log(this.id, '哪裡來的？');
+    //         this.$emit('add-to-cart', this.id, this.qty);
+    //         this.closeProductModal()
+    //     },
 
-    },
+    // },
 
-    // $refs
-    mounted(){
+    // // $refs
+    // mounted(){
         
-        // 初始化 Boostrap 商品列表 modal
-        this.bsModal = new bootstrap.Modal(document.getElementById('productModal'), {
-            keyboard: false
-        });
+    //     // 初始化 Boostrap 商品列表 modal
+    //     this.bsModal = new bootstrap.Modal(document.getElementById('productModal'), {
+    //         keyboard: false
+    //     });
        
-    }
-})
+    // }
+// })
+
+// 驗證套件組
+.component('VForm', VeeValidate.Form)
+.component('VField', VeeValidate.Field)
+.component('ErrorMessage', VeeValidate.ErrorMessage)
+
+
 .mount('#app');
