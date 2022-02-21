@@ -1,10 +1,5 @@
 // 匯入 product modal 元件
-import userProductModal from './product_modal.js';
-
-// API 資訊
-const base_url = 'https://vue3-course-api.hexschool.io/v2/api';
-const api_path = 'karen666'; 
-
+import userProductModalObj from '../components/product_modal.js';
 
 // veevalidate rules
 Object.keys(VeeValidateRules).forEach(rule => {
@@ -34,10 +29,6 @@ const app = {
             isLoadingItem: '',
             qty: 1,
         }
-    },
-
-    methods: {
-        userProductModal
     },
 
     methods: {
@@ -161,6 +152,7 @@ const app = {
 // Vue 以 cdn 載入的子元件
 Vue.createApp(app)
 // 註冊 modal 元件
+.component('userProductModal', userProductModalObj)
 // .component('user-product-modal', {
     // template: '#userProductModal',
     // props: ['id'],
