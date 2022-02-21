@@ -12,6 +12,7 @@ const app = {
             productData: [],
             prodcutId: '',
             isLoadingItem: '',
+            qty: 1,
         }
     },
 
@@ -63,7 +64,8 @@ const app = {
 
             axios.post(`${base_url}/${api_path}/cart`, { data })
             .then(res => {
-                console.log(res.data);
+                console.log(res.data.product);
+                alert('已成功加入購物車')
                 this.getCartData();
                 this.isLoadingItem = '';
             })
@@ -72,15 +74,49 @@ const app = {
             })
         },
 
-        deleteProductItem(id){
+        // 修改購物車數量
+        editCartItem(id, qty){
+
+            const data = {
+                "product_id": id,
+                "qty": qty,
+            }
+
+            axios.put(`${base_url}/${api_path}/cart/${id}`, { data } )
+            .then(res => {
+                console.log(res);
+                this.getCartData();
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+        },
+
+        // 刪除單一購物車產品
+        deleteSingleProductItem(id){
 
             this.isLoadingItem = id;
 
             axios.delete(`${base_url}/${api_path}/cart/${id}`)
             .then(res => {
-                console.log(res, `${id}`);
+                alert('產品已刪除')
                 this.getCartData();
                 this.isLoadingItem = '';
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        },
+
+        // 清空購物車所有產品
+        deleteAllCartItems(){
+            
+            axios.delete(`${base_url}/${api_path}/carts`)
+            .then(res => {
+                console.log(res.data);
+                alert('購物車已清空')
+                this.getCartData();
             })
             .catch(err => {
                 console.log(err);
@@ -118,9 +154,15 @@ Vue.createApp(app)
         }
     },
     methods: {
+
         openProductModal(){
             this.bsModal.show();
         },
+
+        closeProductModal(){
+            this.bsModal.hide();
+        },
+
         // 抓取單筆產品資料 (開 modal 的時候就打這支 API)
         getModalProductList(){
             axios.get(`${base_url}/${api_path}/product/${this.id}`)
@@ -131,7 +173,17 @@ Vue.createApp(app)
             .catch(err => {
                 console.log(err);
             })
-        }
+        },
+        
+
+        // 在 modal 內新增產品數量
+        addToCart(){
+            console.log(this);
+            console.log(this.id, '哪裡來的？');
+            this.$emit('add-to-cart', this.id, this.qty);
+            this.closeProductModal()
+        },
+
     },
 
     // $refs
