@@ -41,8 +41,8 @@ export default {
 
         // 在 modal 內新增產品數量
         addToCart(){
-            console.log(this);
-            console.log(this.id, '哪裡來的？');
+            // console.log(this);
+            // console.log(this.id, '哪裡來的？');
             this.$emit('add-to-cart', this.id, this.qty);
             this.closeProductModal()
         },
@@ -53,7 +53,7 @@ export default {
     mounted(){
         
         // 初始化 Boostrap 商品列表 modal
-        this.bsModal = new bootstrap.Modal(document.getElementById('productModal'), {
+        this.bsModal = new bootstrap.Modal(this.$refs.innerModalTrigger, {
             keyboard: false
         });
        

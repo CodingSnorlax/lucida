@@ -19,20 +19,12 @@
       <div class="mt-4">
 
         <!-- 詳細產品 Modal -->
-        <div  class="modal fade" 
-              id="productModal" 
-              tabindex="-1" 
-              role="dialog" 
-              aria-labelledby="exampleModalLabel" 
-              aria-hidden="true" 
-              ref="modal">
+        <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true" ref="innerModalTrigger">
 
-          <user-product-modal :id="prodcutId" 
-                              @add-to-cart="addToCart"
-                              ref="productModal"></user-product-modal>
-          
+          <user-product-modal :id="prodcutId" @add-to-cart="addToCart" ref="productModal"></user-product-modal>
+
         </div>
-
 
         <table class="table align-middle">
           <!-- 表頭 -->
@@ -49,18 +41,17 @@
           <tbody>
             <tr v-for="productItem in productData" :key="productItem.id">
               <td style="width: 250px">
-                <div  :style="{ backgroundImage: `url(${productItem.imageUrl})` }"
-                      style="height: 150px; 
+                <div :style="{ backgroundImage: `url(${productItem.imageUrl})` }" style="height: 150px; 
                       background-size: cover; 
-                      background-position: center"
-                      >
+                      background-position: center">
                 </div>
               </td>
               <td>
                 {{ productItem.title }}
               </td>
               <td>
-                <div class="h5" v-if="productItem.price === productItem.origin_price">優惠價 <span class="text-danger">{{ productItem.price }}</span> 元</div>
+                <div class="h5" v-if="productItem.price === productItem.origin_price">優惠價 <span class="text-danger">{{
+                    productItem.price }}</span> 元</div>
                 <div v-else>
                   <del class="h6 mb-6">原價 {{ productItem.origin_price }} 元</del>
                   <div class="h5">優惠價 <span class="text-danger">{{ productItem.price }}</span> 元</div>
@@ -68,25 +59,15 @@
               </td>
               <td>
                 <div class="btn-group btn-group-sm">
-                  <button type="button" 
-                          class="btn btn-outline-secondary" 
-                          @click="openProductModal(productItem.id)"
-                          >
-                    <div class="spinner-border spinner-border-sm text-dark" 
-                         role="status" 
-                         v-show="isLoadingItem === productItem.id"
-                         ></div>
+                  <button type="button" class="btn btn-outline-secondary" @click="openProductModal(productItem.id)">
+                    <div class="spinner-border spinner-border-sm text-dark" role="status"
+                      v-show="isLoadingItem === productItem.id"></div>
                     查看更多
                   </button>
-                  <button type="button" 
-                          class="btn btn-outline-danger" 
-                          @click="addToCart(productItem.id)"
-                          :disabled="isLoadingItem === productItem.id"
-                          >
-                          <div class="spinner-border spinner-border-sm text-danger" 
-                                role="status" 
-                                v-show="isLoadingItem === productItem.id"
-                                ></div>
+                  <button type="button" class="btn btn-outline-danger" @click="addToCart(productItem.id)"
+                    :disabled="isLoadingItem === productItem.id">
+                    <div class="spinner-border spinner-border-sm text-danger" role="status"
+                      v-show="isLoadingItem === productItem.id"></div>
                     加到購物車
                   </button>
                 </div>
@@ -118,10 +99,11 @@
             <template v-if="cartData.carts">
               <tr v-for="productItem in cartData.carts">
                 <td>
-                  <button type="button" class="btn btn-outline-danger btn-sm" @click="deleteSingleProductItem(productItem.id)">
+                  <button type="button" class="btn btn-outline-danger btn-sm"
+                    @click="deleteSingleProductItem(productItem.id)">
                     <i class="fas fa-spinner fa-pulse" v-show="isLoadingItem === productItem.id"></i>
-                    x 
-                  </button> 
+                    x
+                  </button>
                 </td>
                 <td>
                   {{ productItem.product.title }}
@@ -133,13 +115,10 @@
                   <div class="input-group input-group-sm">
                     <div class="input-group mb-3">
                       <!-- <input min="1" type="number" class="form-control" v-model="productItem.qty"> -->
-                      <select class="form-select" id="" v-model="productItem.qty" @change="editCartItem(productItem.id, productItem.qty)">
-                        <option 
-                                v-for="num in 20" 
-                                :key="`${num}${productItem.id}`"
-                                :value="num" 
-                                >
-                                {{ num }}</option>
+                      <select class="form-select" id="" v-model="productItem.qty"
+                        @change="editCartItem(productItem.id, productItem.qty)">
+                        <option v-for="num in 20" :key="`${num}${productItem.id}`" :value="num">
+                          {{ num }}</option>
                       </select>
                       <span class="input-group-text" id="basic-addon2">{{ productItem.product.unit }}</span>
                     </div>
@@ -147,7 +126,7 @@
                 </td>
                 <td class="text-center">
                   <span class="text-danger"> $ {{ productItem.product.price }} </span>
-                  
+
                   <!-- <small class="text-success">折扣價：</small>
                   {{ }} -->
                 </td>
@@ -156,7 +135,7 @@
           </tbody>
           <!-- 表單底部 -->
           <tfoot>
-            <tr >
+            <tr>
               <td colspan="3" class="text-end fw-bold text-danger">結帳總金額</td>
               <td class="text-center"><span class="text-danger fw-bold">$ {{ cartData.total }}</span></td>
             </tr>
@@ -176,61 +155,29 @@
         <v-form ref="form" class="col-md-6" v-slot="{ errors }" @submit="sendOrder">
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <v-field 
-              id="email" 
-              name="信箱" 
-              type="email" 
-              class="form-control"
-              :class="{ 'is-invalid': errors['信箱'] }" 
-              placeholder="請輸入 Email"
-              rules="email|required"
-              v-model="form.user.email"
-              ></v-field>
+            <v-field id="email" name="信箱" type="email" class="form-control" :class="{ 'is-invalid': errors['信箱'] }"
+              placeholder="請輸入 Email" rules="email|required" v-model="form.user.email"></v-field>
             <error-message name="信箱" class="invalid-feedback"></error-message>
           </div>
 
           <div class="mb-3">
             <label for="name" class="form-label">收件人姓名</label>
-            <v-field 
-            id="name" 
-            name="姓名" 
-            type="text" 
-            class="form-control" 
-            :class="{ 'is-invalid': errors['姓名'] }"
-            placeholder="請輸入姓名" 
-            rules="required"
-            v-model="form.user.name"
-            ></v-field>
+            <v-field id="name" name="姓名" type="text" class="form-control" :class="{ 'is-invalid': errors['姓名'] }"
+              placeholder="請輸入姓名" rules="required" v-model="form.user.name"></v-field>
             <error-message name="姓名" class="invalid-feedback"></error-message>
           </div>
 
           <div class="mb-3">
             <label for="tel" class="form-label">收件人電話</label>
-            <v-field 
-            id="tel" 
-            name="電話" 
-            type="text" 
-            class="form-control" 
-            :class="{ 'is-invalid': errors['電話'] }"
-            placeholder="請輸入電話"
-            :rules="isPhone"
-            v-model="form.user.tel"
-            ></v-field>
+            <v-field id="tel" name="電話" type="text" class="form-control" :class="{ 'is-invalid': errors['電話'] }"
+              placeholder="請輸入電話" :rules="isPhone" v-model="form.user.tel"></v-field>
             <error-message name="電話" class="invalid-feedback"></error-message>
           </div>
 
           <div class="mb-3">
             <label for="address" class="form-label">收件人地址</label>
-            <v-field 
-            id="address" 
-            name="地址" 
-            type="text" 
-            class="form-control" 
-            :class="{ 'is-invalid': errors['地址'] }"
-            placeholder="請輸入地址" 
-            rules="required"
-            v-model="form.user.address"
-            ></v-field>
+            <v-field id="address" name="地址" type="text" class="form-control" :class="{ 'is-invalid': errors['地址'] }"
+              placeholder="請輸入地址" rules="required" v-model="form.user.address"></v-field>
             <error-message name="地址" class="invalid-feedback"></error-message>
           </div>
 
@@ -250,6 +197,7 @@
 
   <!-- modal 元件的 x-template -->
   <script type="text/x-template" id="userProductModal">
+
       <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content border-0">
           <div class="modal-header bg-dark text-white">
@@ -298,6 +246,8 @@
       </div>
       </div>
       </div>
+
+   
   </script>
 
   <!-- 載入 ajax -->
