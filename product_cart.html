@@ -152,7 +152,7 @@
 
         <!-- 驗證表單的區塊 -->
         <!-- submit.prevent 要加 prevent 加不進去的原因？ 是因為 v-form 沒有這個屬性嗎 -->
-        <v-form ref="form" class="col-md-6" v-slot="{ errors }" @submit="sendOrder">
+        <v-form ref="form" class="col-md-6" v-slot="{ errors }" @submit.prevent="sendOrder">
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <v-field id="email" name="信箱" type="email" class="form-control" :class="{ 'is-invalid': errors['信箱'] }"
@@ -196,9 +196,9 @@
   </div>
 
   <!-- modal 元件的 x-template -->
-  <script type="text/x-template" id="userProductModal">
+  <script type="text/x-template" id="userProductModal" >
 
-      <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-dialog modal-xl" role="document" >
         <div class="modal-content border-0">
           <div class="modal-header bg-dark text-white">
             <h5 class="modal-title" id="exampleModalLabel">
