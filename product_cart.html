@@ -17,14 +17,8 @@
   <div id="app">
     <div class="container">
       <div class="mt-4">
-
-        <!-- 詳細產品 Modal -->
-        <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-          aria-hidden="true" ref="innerModalTrigger">
-
-          <user-product-modal :id="prodcutId" @add-to-cart="addToCart" ref="productModal"></user-product-modal>
-
-        </div>
+        <!-- product modal ref -->
+        <user-product-modal :id="prodcutId" @add-to-cart="addToCart" ref="productModal"></user-product-modal>
 
         <table class="table align-middle">
           <!-- 表頭 -->
@@ -196,58 +190,63 @@
   </div>
 
   <!-- modal 元件的 x-template -->
-  <script type="text/x-template" id="userProductModal" >
+  <script type="text/x-template" id="userProductModal">
 
-      <div class="modal-dialog modal-xl" role="document" >
-        <div class="modal-content border-0">
-          <div class="modal-header bg-dark text-white">
-            <h5 class="modal-title" id="exampleModalLabel">
-              <!-- props 傳入的 id 名稱 -->
-              <span> 產品編號 {{ productInModal.id }}</span>
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- 詳細產品 Modal -->
+  <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" ref="innerModalTrigger">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content border-0">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="exampleModalLabel">
+            <!-- props 傳入的 id 名稱 -->
+            <span> 產品編號 {{ productInModal.id }}</span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <!-- 需補上 :src="" -->
+              <img class="img-fluid" :src="productInModal.imageUrl" :alt="productInModal.title">
+            </div>
+
+            <div class="col-sm-6">
+
+              <span class="badge bg-light text-dark mb-2">{{ productInModal.category }}</span>
+              <h4 clas="mb-2">{{productInModal.title}}</h4>
+
+              <div class="h5" v-if="productInModal.price === productInModal.origin_price">{{ productInModal.price }} 元
+              </div>
+              <div v-else class="mb-4">
+                <del class="h6"> $ {{ productInModal.origin_price }}</del>
+                <div class="h4 text-danger fw-bold"> $ {{ productInModal.price }}</div>
+              </div>
+
+              <div>
+                <h6>商品描述</h6>
+                <p class="fw-light">{{ productInModal.description }}</p>
+              </div>
+              <div class="mb-4">
+                <h6>商品內容</h6>
+                <p class="fw-light">{{ productInModal.content }}</p>
+              </div>
+
+              <div class="input-group mb-4 w-50 me-4">
+                <input type="number" class="form-control" min="1" v-model="qty">
+                <!-- 觸發外層 addToCart (外層已經有寫，現成直接用) -->
+                <button type="button" class="btn btn-dark" @click="addToCart">加入購物車</button>
+              </div>
+
+            </div>
           </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-sm-6">
-            <!-- 需補上 :src="" -->
-            <img class="img-fluid" :src="productInModal.imageUrl" :alt="productInModal.title">
-          </div>
-
-          <div class="col-sm-6">
-            
-            <span class="badge bg-light text-dark mb-2">{{ productInModal.category }}</span>
-            <h4 clas="mb-2">{{productInModal.title}}</h4>
-            
-              <div class="h5" v-if="productInModal.price === productInModal.origin_price">{{ productInModal.price }} 元</div>
-            <div v-else class="mb-4">
-              <del class="h6"> $ {{ productInModal.origin_price }}</del>
-              <div class="h4 text-danger fw-bold"> $ {{ productInModal.price }}</div>
-            </div>
-          
-            <div>
-              <h6>商品描述</h6>
-              <p class="fw-light">{{ productInModal.description }}</p>
-            </div>
-            <div class="mb-4">
-              <h6>商品內容</h6>
-              <p class="fw-light">{{ productInModal.content }}</p>
-            </div>
-
-            <div class="input-group mb-4 w-50 me-4">
-              <input type="number" class="form-control" min="1" v-model="qty">
-                                                      <!-- 觸發外層 addToCart (外層已經有寫，現成直接用) -->
-              <button type="button" class="btn btn-dark" @click="addToCart">加入購物車</button>
-            </div>
-
-          </div>
-      </div>
           <!-- col-sm-6 end -->
+        </div>
       </div>
-      </div>
-      </div>
+    </div>
+  </div>
 
-   
+
   </script>
 
   <!-- 載入 ajax -->
