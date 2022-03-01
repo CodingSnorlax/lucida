@@ -73,7 +73,7 @@
         <!-- 購物車列表 -->
         <!-- 清空購物車按鈕 (單獨) -->
         <div class="text-end">
-          <button class="btn btn-outline-danger" type="button" @click="deleteAllCartItems">清空購物車</button>
+          <button class="btn btn-outline-danger" type="button" @click="deleteAllCartItems" :disabled="this.cartData.carts?.length === 0">清空購物車</button>
         </div>
 
         <!-- 購物車表格 -->
@@ -105,21 +105,21 @@
                     已套用優惠券
                   </div> -->
                 </td>
+                <!-- 修改產品數量 -->
                 <td>
                   <div class="input-group input-group-sm">
                     <div class="input-group mb-3">
-                      <!-- <input min="1" type="number" class="form-control" v-model="productItem.qty"> -->
-                      <select class="form-select" id="" v-model="productItem.qty"
-                        @change="editCartItem(productItem.id, productItem.qty)">
-                        <option v-for="num in 20" :key="`${num}${productItem.id}`" :value="num">
-                          {{ num }}</option>
-                      </select>
+                      <input min="1"
+                      type="number" 
+                      class="form-control" 
+                      @change="editCartItem(productItem, productItem.qty)"
+                      v-model="productItem.qty">
                       <span class="input-group-text" id="basic-addon2">{{ productItem.product.unit }}</span>
                     </div>
                   </div>
                 </td>
                 <td class="text-center">
-                  <span class="text-danger"> $ {{ productItem.product.price }} </span>
+                  <span class="text-danger">$ {{ productItem.product.price }} </span>
 
                   <!-- <small class="text-success">折扣價：</small>
                   {{ }} -->
@@ -146,7 +146,7 @@
 
         <!-- 驗證表單的區塊 -->
         <!-- submit.prevent 要加 prevent 加不進去的原因？ 是因為 v-form 沒有這個屬性嗎 -->
-        <v-form ref="form" class="col-md-6" v-slot="{ errors }" @submit.prevent="sendOrder">
+        <v-form ref="form" class="col-md-6" v-slot="{ errors }" @submit="sendOrder">
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <v-field id="email" name="信箱" type="email" class="form-control" :class="{ 'is-invalid': errors['信箱'] }"
@@ -180,7 +180,12 @@
             <textarea id="message" class="form-control" v-model="form.message" cols="30" rows="10"></textarea>
           </div>
           <div class="text-end">
-            <button type="submit" class="btn btn-danger">送出訂單</button>
+            <button type="button" 
+            class="btn btn-danger" 
+            @click="sendOrder" 
+            :disabled="cartData.carts?.length === 0 || Object.keys(errors).length > 0"
+            >送出訂單
+          </button>
           </div>
         </v-form>
         <!-- 表單驗證區 -->

@@ -49,11 +49,10 @@ const app = {
             axios.get(`${base_url}/${api_path}/products/all`)
 
                 .then(res => {
-                    console.log(res.data);
                     this.productData = res.data.products;
                 })
                 .catch(err => {
-                    console.log(err);
+                    console.dir(err);
                 })
         },
 
@@ -67,7 +66,6 @@ const app = {
         getCartData() {
             axios.get(`${base_url}/${api_path}/cart`)
                 .then(res => {
-                    console.log(res.data.data);
                     // 是個陣列
                     this.cartData = res.data.data;
 
@@ -80,7 +78,6 @@ const app = {
         // 購物車：加入產品
         // 產品數量：參數預設值 (商品數量為 1)
         addToCart(id, qty = 1) {
-
             const data = {
                 "product_id": id,
                 "qty": qty, // 也可以解構賦值只寫 qty
@@ -90,8 +87,8 @@ const app = {
 
             axios.post(`${base_url}/${api_path}/cart`, { data })
                 .then(res => {
-                    console.log(res.data.product);
-                    alert('已成功加入購物車')
+                    alert(res.data.message)
+                    // this.qty = 1;
                     this.getCartData();
                     this.isLoadingItem = '';
                 })
@@ -101,14 +98,13 @@ const app = {
         },
 
         // 修改購物車數量
-        editCartItem(id, qty) {
-
+        editCartItem(item, qty) {
             const data = {
-                "product_id": id,
+                "product_id": item.product_id,
                 "qty": qty,
             }
 
-            axios.put(`${base_url}/${api_path}/cart/${id}`, { data })
+            axios.put(`${base_url}/${api_path}/cart/${item.id}`, { data })
                 .then(res => {
                     console.log(res);
                     this.getCartData();
@@ -142,6 +138,7 @@ const app = {
                 .then(res => {
                     console.log(res.data);
                     alert('購物車已清空')
+                    this.cartData = '';
                     this.getCartData();
                     this.form = '';
                 })
@@ -158,10 +155,12 @@ const app = {
                 .then(res => {
                     console.log(res.data);
                     alert(res.data.message);
+                    this.$refs.form.resetForm();
                     this.getCartData()          
                 })
                 .catch(err => {
-                    console.log(err);
+                    alert('訂單送出失敗！')
+                    console.dir(err);
                 })
 
         },
