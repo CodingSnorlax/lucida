@@ -106,7 +106,6 @@ const app = {
 
             axios.put(`${base_url}/${api_path}/cart/${item.id}`, { data })
                 .then(res => {
-                    console.log(res);
                     this.getCartData();
                 })
                 .catch(err => {
@@ -136,11 +135,9 @@ const app = {
 
             axios.delete(`${base_url}/${api_path}/carts`)
                 .then(res => {
-                    console.log(res.data);
                     alert('購物車已清空')
                     this.cartData = '';
                     this.getCartData();
-                    this.form = '';
                 })
                 .catch(err => {
                     console.log(err);
@@ -153,7 +150,6 @@ const app = {
 
             axios.post(`${base_url}/${api_path}/order`, { data: this.form })
                 .then(res => {
-                    console.log(res.data);
                     alert(res.data.message);
                     this.$refs.form.resetForm();
                     this.getCartData()          
